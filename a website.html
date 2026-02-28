@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Công viên giải trí 18 tuổi!</title>
+</head>
+<body>
+
+    <section id="home-page" class="container">
+        <div class="home-nav">
+            <a href="#" class="guide-link" onclick="toggleModal('guide-modal')">Hướng dẫn sử dụng</a>
+        </div>
+        <div class="main-buttons">
+            <button class="btn-main btn-lg" onclick="showPage('gift-page')">
+                <span class="btn-text-main">Món quà năm 2026</span>
+                <span class="btn-text-sub">Sinh nhật 18 tuổi</span>
+            </button>
+            <button class="btn-main btn-md" onclick="toggleModal('letter-modal')">
+                <span class="btn-text-main">Thiệp mừng</span>
+            </button>
+            <button class="btn-main btn-sm" onclick="showPage('park-page')">
+                <span class="btn-text-main">Công viên giải trí</span>
+            </button>
+        </div>
+    </section>
+
+    <section id="gift-page" class="container" style="display:none;">
+        <div id="riddle-container">
+            <h2 id="riddle-title">Câu đố tìm quà</h2>
+            <div class="riddle-image-wrapper">
+                <img id="riddle-img" src="" alt="Hình minh họa câu đố">
+            </div>
+            <p id="riddle-text"></p>
+            <div class="input-group">
+                <input type="text" id="riddle-input" placeholder="Nhập đáp án..." autocomplete="off">
+                <button class="btn-action" onclick="checkRiddle()">Xác nhận</button>
+            </div>
+        </div>
+
+        <div id="sort-container" style="display:none;">
+            <h3>Sắp xếp danh sách quà theo thứ tự "Một ngày vui vẻ"</h3>
+            <ul id="sortable-list" class="sortable-list"></ul>
+            <button class="btn-action btn-block" onclick="checkSort()">Xác nhận thứ tự</button>
+        </div>
+
+        <div id="result-container" style="display:none;">
+            <p id="final-msg" class="highlight-text"></p>
+            <div id="final-list" class="gift-list-final"></div>
+            <button class="btn-secondary" onclick="showPage('home-page')">Về trang chủ</button>
+        </div>
+    </section>
+
+	<section id="park-page" class="container park-container" style="display:none;">
+		<h2>Công viên giải trí của Nu</h2>
+		
+		<div class="park-grid">
+			<div class="park-col">
+				<h4>Góc thư giãn</h4>
+				<div class="video-wrapper">
+					<iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
+				</div>
+			</div>
+
+			<div class="park-col">
+				<div class="pomo-card">
+					<div class="pomo-tabs">
+						<button id="pomo-btn" class="btn-tab active" onclick="setMode('pomo')">Pomo</button>
+						<button id="short-btn" class="btn-tab" onclick="setMode('short')">Short</button>
+						<button id="long-btn" class="btn-tab" onclick="setMode('long')">Long</button>
+					</div>
+					<div id="timer">25:00</div>
+					<button id="start-btn" class="btn-start" onclick="toggleTimer()">START</button>
+					<div class="pomo-stats">
+						<span>Vòng: <b id="pomo-count">0</b></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="park-col">
+				<div class="todo-container">
+					<h4>To-do List <span id="todo-stats" style="font-size: 0.8rem; opacity: 0.6;">0/0</span></h4>
+					<div class="todo-input-group">
+						<input type="text" id="todo-input" placeholder="Việc cần làm...">
+						<button class="btn-add-todo" onclick="addTodo()">+</button>
+					</div>
+					<ul id="todo-list"></ul>
+				</div>
+			</div>
+		</div>
+
+		<button class="btn-secondary" onclick="showPage('home-page')">Quay lại trang chủ</button>
+	</section>
+
+    <div id="guide-modal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModalDirect('guide-modal')">&times;</span>
+            <h3>Hướng dẫn</h3>
+            <p>Hãy giải các câu đố để tìm ra vị trí ẩn giấu của từng món quà trong nhà.</p>
+            <p>Tìm quà xong thì mới được đọc thư. Đọc thư xong thì công viên giải trí sẽ là món quà cuối cùng đó.</p>
+        </div>
+    </div>
+
+    <div id="letter-modal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content letter-content">
+            <span class="close-modal" onclick="closeModalDirect('letter-modal')">&times;</span>
+            <h3>Dear Nu,</h3>
+            <p>Chúc bạn Nu sinh nhật tuổi 18 rực rỡ! 🌸</p>
+            <p>Chúc Nu luôn hạnh phúc và học thật giỏi trên con đường trở thành một bác sĩ tương lai nhé!</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
