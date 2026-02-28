@@ -60,7 +60,23 @@
 			<div class="park-col">
 				<h4>Góc thư giãn</h4>
 				<div class="video-wrapper">
-					<iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
+					<iframe id="youtube-player" src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
+				</div>
+				
+				<div class="music-controls" style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px;">
+					<select id="playlist-select" onchange="changeVideo(this.value)" style="padding: 8px; border-radius: 8px; font-family: 'Montserrat';">
+						<option value="https://youtu.be/JdqL89ZZwFw">Nhạc Chill (Mặc định)</option>
+						<option value="https://youtu.be/T41szkd1eMA?list=RDXdsF2JtlSaw">Lofi Girl Playlist</option>
+						<option value="5qap5aO4i9A">Nhạc không lời tập trung</option>
+					</select>
+					
+					<div style="display: flex; gap: 5px;">
+						<input type="text" id="custom-link" placeholder="Dán link YouTube vào đây..." style="flex: 1; padding: 8px; border-radius: 8px; border: 1px solid #ddd;">
+						<button class="btn-action" onclick="loadCustomVideo()" style="padding: 8px 12px;">Play</button>
+					</div>
+				</div>
+				<div id="pomo-stats" class="pomo-stats">
+					<span>Tập trung: <b id="total-focus-time">0</b> phút</span>
 				</div>
 			</div>
 

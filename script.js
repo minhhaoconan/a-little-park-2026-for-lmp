@@ -216,4 +216,43 @@ function updateTodoStats() {
     document.getElementById('todo-stats').innerText = `${done}/${total}`;
 }
 
+function changeVideo(videoId) {
+    const player = document.getElementById('youtube-player');
+    if (videoId.includes('list=')) {
+        player.src = `https://www.youtube.com/embed/${videoId}`;
+    } else {
+        player.src = `https://www.youtube.com/embed/${videoId}`;
+    }
+}
+
+// Hàm xử lý link dán vào
+function loadCustomVideo() {
+    const input = document.getElementById('custom-link').value;
+    const player = document.getElementById('youtube-player');
+    let videoId = "";
+
+    try {
+        if (input.includes('v=')) {
+            // Link dạng youtube.com/watch?v=ABC
+            videoId = input.split('v=')[1].split('&')[0];
+        } else if (input.includes('youtu.be/')) {
+            // Link dạng youtu.be/ABC
+            videoId = input.split('youtu.be/')[1].split('?')[0];
+        } else if (input.includes('list=')) {
+            // Link playlist
+            const listId = input.split('list=')[1].split('&')[0];
+            player.src = `https://www.youtube.com/embed/videoseries?list=${listId}`;
+            return;
+        }
+
+        if (videoId) {
+            player.src = `https://www.youtube.com/embed/${videoId}`;
+        } else {
+            alert("Link không đúng định dạng YouTube rồi.");
+        }
+    } catch (e) {
+        alert("Có lỗi khi đọc link rồi!");
+    }
+}
+
 updateTimerDisplay();
