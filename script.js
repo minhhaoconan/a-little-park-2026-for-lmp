@@ -1,3 +1,4 @@
+// script.js
 const riddles = [
     { text: "Song Ngư là cá, tay ___ bắt cá.", ans: "gấu", img: "https://cf.shopee.vn/file/vn-11134207-820l4-mfxoko6bkpam39" },
     { text: "Ngăn kéo ngay dưới bông mai, nam ___ nữ tả.", ans: "hữu", img: "https://via.placeholder.com/300x150?text=Hinh+Cau+2" },
@@ -13,7 +14,6 @@ const correctOrder = ["Gương", "Vòng tay", "Trà sữa", "Blind box", "Sơn H
 
 let currentRiddleIndex = 0;
 let sortableInstance = null;
-
 
 const pomoModes = {
     pomo: { time: 25 * 60, tabId: 'pomo-btn', color: '#e74c3c' },
@@ -201,12 +201,23 @@ function addTodo() {
     const li = document.createElement('li');
     li.className = 'todo-item';
     li.innerHTML = `
-        <input type="checkbox" onchange="updateTodoStats()">
+        <input type="checkbox" onchange="toggleTodo(this)">
         <span>${input.value}</span>
         <button onclick="this.parentElement.remove(); updateTodoStats();">✕</button>
     `;
     document.getElementById('todo-list').appendChild(li);
     input.value = "";
+    updateTodoStats();
+}
+
+function toggleTodo(checkbox) {
+    const li = checkbox.parentElement;
+    if (checkbox.checked) {
+        li.classList.add('done');
+        document.getElementById('todo-list').appendChild(li);
+    } else {
+        li.classList.remove('done');
+    }
     updateTodoStats();
 }
 
@@ -219,34 +230,36 @@ function updateTodoStats() {
 function changeVideo(videoId) {
     const player = document.getElementById('youtube-player');
     if (videoId.includes('list=')) {
-        player.src = `https://www.youtube.com/embed/${videoId}`;
+        player.src = `https://www.youtube.com/embed/videoseries?list=${videoId.split('list=')[1]}&modestbranding=1&rel=0&showinfo=0`;
+    } else if (videoId.includes('youtube.com/playlist')) {
+        const listId = new URL(videoId).searchParams.get('list');
+        player.src = `https://www.youtube.com/embed/videoseries?list=${listId}&modestbranding=1&rel=0&showinfo=0`;
     } else {
-        player.src = `https://www.youtube.com/embed/${videoId}`;
+        player.src = `https://www.youtube.com/embed/${videoId.split('/').pop()}?modestbranding=1&rel=0&showinfo=0`;
     }
 }
 
-// Hàm xử lý link dán vào
 function loadCustomVideo() {
     const input = document.getElementById('custom-link').value;
     const player = document.getElementById('youtube-player');
     let videoId = "";
+    let listId = "";
 
     try {
         if (input.includes('v=')) {
-            // Link dạng youtube.com/watch?v=ABC
             videoId = input.split('v=')[1].split('&')[0];
+            listId = input.split('list=')[1] ? input.split('list=')[1].split('&')[0] : "";
         } else if (input.includes('youtu.be/')) {
-            // Link dạng youtu.be/ABC
             videoId = input.split('youtu.be/')[1].split('?')[0];
+            listId = input.split('list=')[1] ? input.split('list=')[1].split('&')[0] : "";
         } else if (input.includes('list=')) {
-            // Link playlist
-            const listId = input.split('list=')[1].split('&')[0];
-            player.src = `https://www.youtube.com/embed/videoseries?list=${listId}`;
-            return;
+            listId = input.split('list=')[1].split('&')[0];
         }
 
-        if (videoId) {
-            player.src = `https://www.youtube.com/embed/${videoId}`;
+        if (listId) {
+            player.src = `https://www.youtube.com/embed/videoseries?list=${listId}&modestbranding=1&rel=0&showinfo=0`;
+        } else if (videoId) {
+            player.src = `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&showinfo=0`;
         } else {
             alert("Link không đúng định dạng YouTube rồi.");
         }
