@@ -199,9 +199,6 @@ function updateTimerDisplay() {
 
 function addTodo() {
 	const input = document.getElementById('todo-input')
-	document.getElementById('todo-input').addEventListener('keypress', function(e) {
-		if (e.key === 'Enter') addTodo()
-	})
 	if (!input.value.trim()) return
 
 	const li = document.createElement('li')
@@ -281,5 +278,9 @@ function loadCustomVideo() {
         alert("Có lỗi khi đọc link rồi!");
     }
 }
+
+document.getElementById('todo-input').addEventListener('keypress', function(e) {
+	if (e.key === 'Enter') addTodo()
+})
 
 updateTimerDisplay();
