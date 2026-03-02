@@ -249,34 +249,29 @@ function changeVideo(value) {
 	}
 }
 
-// Hàm xử lý link dán vào
+function convertToDashYoutube(url) {
+	if (!url) return ""
+
+	url = url.trim()
+
+	if (url.includes("yout-ube.com")) return url
+
+	if (url.includes("youtu.be/")) {
+		let videoId = url.split("youtu.be/")[1].split(/[?&]/)[0]
+		let query = url.includes("?") ? url.substring(url.indexOf("?")) : ""
+		return "https://yout-ube.com/watch?v=" + videoId + query
+	}
+
+	url = url.replace("www.youtube.com", "www.yout-ube.com")
+	url = url.replace("youtube.com", "yout-ube.com")
+
+	return url
+}
+
 function loadCustomVideo() {
-    const input = document.getElementById('custom-link').value;
-    const player = document.getElementById('youtube-player');
-    let videoId = "";
-
-    try {
-        if (input.includes('v=')) {
-            // Link dạng youtube.com/watch?v=ABC
-            videoId = input.split('v=')[1].split('&')[0];
-        } else if (input.includes('youtu.be/')) {
-            // Link dạng youtu.be/ABC
-            videoId = input.split('youtu.be/')[1].split('?')[0];
-        } else if (input.includes('list=')) {
-            // Link playlist
-            const listId = input.split('list=')[1].split('&')[0];
-            player.src = `https://www.youtube.com/embed/videoseries?list=${listId}`;
-            return;
-        }
-
-        if (videoId) {
-            player.src = `https://www.youtube.com/embed/${videoId}`;
-        } else {
-            alert("Link không đúng định dạng YouTube rồi.");
-        }
-    } catch (e) {
-        alert("Có lỗi khi đọc link rồi!");
-    }
+	let input = document.getElementById("custom-link").value
+	let finalUrl = convertToDashYoutube(input)
+	changeVideo(finalUrl)
 }
 
 document.getElementById('todo-input').addEventListener('keypress', function(e) {
