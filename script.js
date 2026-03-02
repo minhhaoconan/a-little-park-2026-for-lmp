@@ -236,17 +236,12 @@ function updateTodoStats() {
 
 function changeVideo(value) {
 	const player = document.getElementById('youtube-player')
+	if (!value) return
 
-	if (value.includes('list=')) {
-		const listId = value.split('list=')[1].split('&')[0]
-		player.src = `https://www.youtube.com/embed/videoseries?list=${listId}`
-	} else if (value.includes('youtu.be/')) {
-		const videoId = value.split('youtu.be/')[1].split('?')[0]
-		player.src = `https://www.youtube.com/embed/${videoId}`
-	} else if (value.includes('v=')) {
-		const videoId = value.split('v=')[1].split('&')[0]
-		player.src = `https://www.youtube.com/embed/${videoId}`
-	}
+	value = value.trim()
+	value = convertToDashYoutube(value)
+
+	player.src = value
 }
 
 function convertToDashYoutube(url) {
