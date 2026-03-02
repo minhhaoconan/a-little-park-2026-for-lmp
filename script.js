@@ -1,4 +1,3 @@
-// script.js
 const riddles = [
     { text: "Song Ngư là cá, tay ___ bắt cá.", ans: "gấu", img: "https://cf.shopee.vn/file/vn-11134207-820l4-mfxoko6bkpam39" },
     { text: "Ngăn kéo ngay dưới bông mai, nam ___ nữ tả.", ans: "hữu", img: "https://via.placeholder.com/300x150?text=Hinh+Cau+2" },
@@ -14,6 +13,7 @@ const correctOrder = ["Gương", "Vòng tay", "Trà sữa", "Blind box", "Sơn H
 
 let currentRiddleIndex = 0;
 let sortableInstance = null;
+
 
 const pomoModes = {
     pomo: { time: 25 * 60, tabId: 'pomo-btn', color: '#e74c3c' },
@@ -142,15 +142,17 @@ function showFinalResult() {
 }
 
 function setMode(mode) {
-    if (isRunning && !confirm("Hệ thống đang chạy, reset timer?")) return;
-    stopTimer();
-    currentMode = mode;
-    timeLeft = pomoModes[mode].time;
-    document.body.style.backgroundColor = pomoModes[mode].color;
-    document.querySelectorAll('.btn-tab').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(pomoModes[mode].tabId).classList.add('active');
-    document.getElementById('start-btn').style.backgroundColor = pomoModes[mode].color;
-    updateTimerDisplay();
+	if (isRunning && !confirm("Hệ thống đang chạy, reset timer?")) return
+	stopTimer()
+	currentMode = mode
+	timeLeft = pomoModes[mode].time
+
+	document.documentElement.style.setProperty('--bg-gradient', `linear-gradient(135deg, ${pomoModes[mode].color} 0%, #ffffff 100%)`)
+
+	document.querySelectorAll('.btn-tab').forEach(btn => btn.classList.remove('active'))
+	document.getElementById(pomoModes[mode].tabId).classList.add('active')
+	document.getElementById('start-btn').style.backgroundColor = pomoModes[mode].color
+	updateTimerDisplay()
 }
 
 function toggleTimer() {
@@ -196,29 +198,37 @@ function updateTimerDisplay() {
 }
 
 function addTodo() {
-    const input = document.getElementById('todo-input');
-    if (!input.value.trim()) return;
-    const li = document.createElement('li');
-    li.className = 'todo-item';
-    li.innerHTML = `
-        <input type="checkbox" onchange="toggleTodo(this)">
-        <span>${input.value}</span>
-        <button onclick="this.parentElement.remove(); updateTodoStats();">✕</button>
-    `;
-    document.getElementById('todo-list').appendChild(li);
-    input.value = "";
-    updateTodoStats();
-}
+	const input = document.getElementById('todo-input')
+	document.getElementById('todo-input').addEventListener('keypress', function(e) {
+		if (e.key === 'Enter') addTodo()
+	})
+	if (!input.value.trim()) return
 
-function toggleTodo(checkbox) {
-    const li = checkbox.parentElement;
-    if (checkbox.checked) {
-        li.classList.add('done');
-        document.getElementById('todo-list').appendChild(li);
-    } else {
-        li.classList.remove('done');
-    }
-    updateTodoStats();
+	const li = document.createElement('li')
+	li.className = 'todo-item'
+	li.innerHTML = `
+		<label class="todo-left">
+			<input type="checkbox">
+			<span>${input.value}</span>
+		</label>
+		<button onclick="this.closest('li').remove(); updateTodoStats();">✕</button>
+	`
+
+	const checkbox = li.querySelector('input')
+	checkbox.addEventListener('change', function() {
+		if (this.checked) {
+			li.classList.add('done')
+			document.getElementById('todo-list').appendChild(li)
+		} else {
+			li.classList.remove('done')
+			document.getElementById('todo-list').prepend(li)
+		}
+		updateTodoStats()
+	})
+
+	document.getElementById('todo-list').prepend(li)
+	input.value = ""
+	updateTodoStats()
 }
 
 function updateTodoStats() {
@@ -227,39 +237,43 @@ function updateTodoStats() {
     document.getElementById('todo-stats').innerText = `${done}/${total}`;
 }
 
-function changeVideo(videoId) {
-    const player = document.getElementById('youtube-player');
-    if (videoId.includes('list=')) {
-        player.src = `https://www.youtube.com/embed/videoseries?list=${videoId.split('list=')[1]}&modestbranding=1&rel=0&showinfo=0`;
-    } else if (videoId.includes('youtube.com/playlist')) {
-        const listId = new URL(videoId).searchParams.get('list');
-        player.src = `https://www.youtube.com/embed/videoseries?list=${listId}&modestbranding=1&rel=0&showinfo=0`;
-    } else {
-        player.src = `https://www.youtube.com/embed/${videoId.split('/').pop()}?modestbranding=1&rel=0&showinfo=0`;
-    }
+function changeVideo(value) {
+	const player = document.getElementById('youtube-player')
+
+	if (value.includes('list=')) {
+		const listId = value.split('list=')[1].split('&')[0]
+		player.src = `https://www.youtube.com/embed/videoseries?list=${listId}`
+	} else if (value.includes('youtu.be/')) {
+		const videoId = value.split('youtu.be/')[1].split('?')[0]
+		player.src = `https://www.youtube.com/embed/${videoId}`
+	} else if (value.includes('v=')) {
+		const videoId = value.split('v=')[1].split('&')[0]
+		player.src = `https://www.youtube.com/embed/${videoId}`
+	}
 }
 
+// Hàm xử lý link dán vào
 function loadCustomVideo() {
     const input = document.getElementById('custom-link').value;
     const player = document.getElementById('youtube-player');
     let videoId = "";
-    let listId = "";
 
     try {
         if (input.includes('v=')) {
+            // Link dạng youtube.com/watch?v=ABC
             videoId = input.split('v=')[1].split('&')[0];
-            listId = input.split('list=')[1] ? input.split('list=')[1].split('&')[0] : "";
         } else if (input.includes('youtu.be/')) {
+            // Link dạng youtu.be/ABC
             videoId = input.split('youtu.be/')[1].split('?')[0];
-            listId = input.split('list=')[1] ? input.split('list=')[1].split('&')[0] : "";
         } else if (input.includes('list=')) {
-            listId = input.split('list=')[1].split('&')[0];
+            // Link playlist
+            const listId = input.split('list=')[1].split('&')[0];
+            player.src = `https://www.youtube.com/embed/videoseries?list=${listId}`;
+            return;
         }
 
-        if (listId) {
-            player.src = `https://www.youtube.com/embed/videoseries?list=${listId}&modestbranding=1&rel=0&showinfo=0`;
-        } else if (videoId) {
-            player.src = `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&showinfo=0`;
+        if (videoId) {
+            player.src = `https://www.youtube.com/embed/${videoId}`;
         } else {
             alert("Link không đúng định dạng YouTube rồi.");
         }
