@@ -1,12 +1,12 @@
 const riddles = [
-    { text: "Song Ngư là cá, tay ___ bắt cá.", ans: "gấu", img: "https://cf.shopee.vn/file/vn-11134207-820l4-mfxoko6bkpam39" },
-    { text: "Ngăn kéo ngay dưới bông mai, nam ___ nữ tả.", ans: "hữu", img: "https://via.placeholder.com/300x150?text=Hinh+Cau+2" },
-    { text: "Đồ ăn ngon thì cần phải có ___.", ans: "gia vị", img: "https://via.placeholder.com/300x150?text=Hinh+Cau+3" },
+    { text: "Song Ngư là cá, tay ___ bắt cá.", ans: "gấu", img: "img/1.jpg" },
+    { text: "Ngăn kéo ngay dưới bông mai, nam tả nữ ___.", ans: "hữu", img: "img/3.jpg" },
+    { text: "Đồ ăn ngon thì cần phải có ___.", ans: "gia vị", img: "img/2.jpg" },
     { text: "Ra ngoài muốn chỉnh trang thì phải soi ___ chính giữa.", ans: "gương", img: "https://via.placeholder.com/300x150?text=Hinh+Cau+4" },
     { text: "Vua thùng phá sảnh, càn cả bàn, gom ___ về.", ans: "chip", img: "https://via.placeholder.com/300x150?text=Hinh+Cau+5" },
-    { text: "Ra ngoài đi học chớ quên mang ___.", ans: "cặp", img: "https://via.placeholder.com/300x150?text=Hinh+Cau+6" },
-    { text: "Bữa sáng đơn giản nhất: Bánh dinh dưỡng + ___.", ans: "sữa", img: "https://via.placeholder.com/300x150?text=Hinh+Cau+7" },
-    { text: "___ trong, ___ giấy, ___ điện đều nằm chung một tủ.", ans: "băng keo", img: "https://via.placeholder.com/300x150?text=Hinh+Cau+8" }
+    { text: "Ra ngoài đi học chớ quên mang ___.", ans: "cặp", img: "img/4.jpg" },
+    { text: "Bữa sáng đơn giản nhất: Bánh dinh dưỡng + ___.", ans: "sữa", img: "img/5.jpg" },
+    { text: "___ trong, ___ giấy, ___ điện đều nằm chung một tủ.", ans: "băng keo", img: "img/6.jpg" }
 ];
 
 const correctOrder = ["Gương", "Vòng tay", "Trà sữa", "Blind box", "Sơn Hải Kinh", "Bộ poker", "Sổ sticker", "Bùa"];
@@ -64,29 +64,72 @@ function initGiftPage() {
 }
 
 function loadRiddle() {
-    if (currentRiddleIndex < riddles.length) {
-        const riddle = riddles[currentRiddleIndex];
-        document.getElementById('riddle-title').innerText = `Câu đố ${currentRiddleIndex + 1}/${riddles.length}`;
-        document.getElementById('riddle-img').src = riddle.img;
-        document.getElementById('riddle-text').innerText = riddle.text;
-        document.getElementById('riddle-input').value = "";
-        document.getElementById('riddle-input').focus();
-    } else {
-        document.getElementById('riddle-container').style.display = 'none';
-        document.getElementById('sort-container').style.display = 'block';
-        renderSortable();
-    }
+	if (currentRiddleIndex < riddles.length) {
+		const riddle = riddles[currentRiddleIndex]
+
+		document.getElementById('riddle-title').innerText = `Câu đố ${currentRiddleIndex + 1}/???`
+		document.getElementById('riddle-img').src = riddle.img
+		document.getElementById('riddle-text').innerText = riddle.text
+
+		const input = document.getElementById('riddle-input')
+		input.value = ""
+		input.classList.remove("correct", "wrong")
+
+		const feedback = document.getElementById("riddle-feedback")
+		feedback.innerText = ""
+		feedback.classList.remove("correct-msg", "wrong-msg")
+
+		document.getElementById("next-btn").style.display = "none"
+
+		input.focus()
+	} else {
+		document.getElementById('riddle-container').style.display = 'none'
+		document.getElementById('sort-container').style.display = 'block'
+		renderSortable()
+	}
 }
 
 function checkRiddle() {
-    let input = document.getElementById('riddle-input').value.toLowerCase().trim();
-    if (input === riddles[currentRiddleIndex].ans) {
-        currentRiddleIndex++;
-        loadRiddle();
-    } else {
-        alert("Sai bét rồi!");
-        document.getElementById('riddle-input').select();
-    }
+	const input = document.getElementById("riddle-input")
+	const feedback = document.getElementById("riddle-feedback")
+	const value = input.value.trim().toLowerCase()
+	const correctAnswer = riddles[currentRiddleIndex].ans.toLowerCase()
+
+	if (value === correctAnswer) {
+		input.classList.remove("wrong")
+		input.classList.add("correct")
+
+		feedback.innerText = "Đúng rồi, giờ thì tìm quà dựa trên gợi ý trước khi sang câu tiếp nào."
+		feedback.classList.remove("wrong-msg")
+		feedback.classList.add("correct-msg")
+
+		document.getElementById("next-btn").style.display = "inline-block"
+	} else {
+		input.classList.remove("correct")
+		input.classList.add("wrong")
+
+		feedback.innerText = "Sai rồi, thử lại đê!"
+		feedback.classList.remove("correct-msg")
+		feedback.classList.add("wrong-msg")
+	}
+}
+
+function nextRiddle() {
+	document.getElementById("next-btn").style.display = "none"
+
+	const input = document.getElementById("riddle-input")
+	input.value = ""
+	input.classList.remove("correct", "wrong")
+
+	currentRiddleIndex++
+
+	if (currentRiddleIndex < riddles.length) {
+		loadRiddle()
+	} else {
+		document.getElementById("riddle-container").style.display = "none"
+		document.getElementById("sort-container").style.display = "block"
+		renderSortable()
+	}
 }
 
 document.getElementById('riddle-input').addEventListener('keypress', function(e) {
@@ -122,7 +165,7 @@ function checkSort() {
 
     let finalAwardText = score === 8 ? "Quá đỉnh! Xin chúc mừng bạn Nu đã nhận được món quà thứ 10: 🎉 +8 vé miễn trừ rửa chén 🎉" : `Cố gắng lắm rồi! Nu nhận được món quà thứ 10 là 🎉 +${score} vé miễn trừ rửa chén 🎉.`;
     
-    alert(`Úm ba la... Hóa ra bạn vẫn còn món quà thứ 9 là '-10 lần rửa chén'. Giờ để xem bạn có 'hack' thêm được món quà thứ 10 không nhé...`);
+    alert(`Úm ba la... Hóa ra bạn Nu vẫn còn món quà thứ 9 là '10 vé miễn trừ rửa chén'. Giờ để xem bạn Nu có 'hack' thêm được món quà thứ 10 không nhé...`);
 
     document.getElementById('final-msg').innerText = finalAwardText;
     document.getElementById('final-list').innerHTML = `<strong>Thứ tự đúng là:</strong><br>${correctOrder.join(" ➔ ")}`;
@@ -146,9 +189,7 @@ function setMode(mode) {
 	stopTimer()
 	currentMode = mode
 	timeLeft = pomoModes[mode].time
-
-	document.documentElement.style.setProperty('--bg-gradient', `linear-gradient(135deg, ${pomoModes[mode].color} 0%, #ffffff 100%)`)
-
+	document.documentElement.style.setProperty('--bg-color', pomoModes[mode].color + '22')
 	document.querySelectorAll('.btn-tab').forEach(btn => btn.classList.remove('active'))
 	document.getElementById(pomoModes[mode].tabId).classList.add('active')
 	document.getElementById('start-btn').style.backgroundColor = pomoModes[mode].color
@@ -204,11 +245,11 @@ function addTodo() {
 	const li = document.createElement('li')
 	li.className = 'todo-item'
 	li.innerHTML = `
-		<label class="todo-left">
+		<div class="todo-left">
 			<input type="checkbox">
 			<span>${input.value}</span>
-		</label>
-		<button onclick="this.closest('li').remove(); updateTodoStats();">✕</button>
+		</div>
+		<button onclick="this.closest('li').remove(); updateTodoStats();">×</button>
 	`
 
 	const checkbox = li.querySelector('input')

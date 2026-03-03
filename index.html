@@ -38,6 +38,8 @@
                 <input type="text" id="riddle-input" placeholder="Nhập đáp án..." autocomplete="off">
                 <button class="btn-action" onclick="checkRiddle()">Xác nhận</button>
             </div>
+			<p id="riddle-feedback" style="margin-top:10px;font-weight:600;"></p>
+			<button id="next-btn" class="btn-action" onclick="nextRiddle()">Câu tiếp theo</button>
         </div>
 
         <div id="sort-container" style="display:none;">
@@ -96,13 +98,15 @@
 			</div>
 
 			<div class="park-col">
-				<div class="todo-container">
-					<h4>To-do List <span id="todo-stats" style="font-size: 0.8rem; opacity: 0.6;">0/0</span></h4>
-					<div class="todo-input-group">
-						<input type="text" id="todo-input" placeholder="Việc cần làm...">
-						<button class="btn-add-todo" onclick="addTodo()">+</button>
+				<div class="todo-section">
+					<h3>To-do List <span id="todo-stats">0/0</span></h3>
+
+					<div class="todo-input-wrapper">
+						<input type="text" id="todo-input" placeholder="Việc cần làm..." autocomplete="off">
+						<button onclick="addTodo()">+</button>
 					</div>
-					<ul id="todo-list"></ul>
+
+					<ul id="todo-list" class="todo-list"></ul>
 				</div>
 			</div>
 		</div>
