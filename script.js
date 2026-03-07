@@ -1,9 +1,9 @@
 const riddles = [
     { text: "Song Ngư là cá, tay ___ bắt cá.", ans: "gấu", img: "img/1.jpg" },
     { text: "Ngăn kéo ngay dưới bông mai, nam tả nữ ___.", ans: "hữu", img: "img/3.jpg" },
-    { text: "Đồ ăn ngon thì cần phải có ___.", ans: "gia vị", img: "img/2.jpg" },
-    { text: "Ra ngoài muốn chỉnh trang thì phải soi ___ chính giữa.", ans: "gương", img: "https://via.placeholder.com/300x150?text=Hinh+Cau+4" },
-    { text: "Vua thùng phá sảnh, càn cả bàn, gom ___ về.", ans: "chip", img: "https://via.placeholder.com/300x150?text=Hinh+Cau+5" },
+    { text: "Đồ ăn ngon thì cần phải có ___ ___.", ans: "gia vị", img: "img/2.jpg" },
+    { text: "Ra ngoài muốn chỉnh trang thì phải soi ___ chính giữa.", ans: "gương", img: "img/7.webp" },
+    { text: "Vua thùng phá sảnh, càn cả bàn, gom ___ về.", ans: "chip", img: "img/8.webp" },
     { text: "Ra ngoài đi học chớ quên mang ___.", ans: "cặp", img: "img/4.jpg" },
     { text: "Bữa sáng đơn giản nhất: Bánh dinh dưỡng + ___.", ans: "sữa", img: "img/5.jpg" },
     { text: "___ trong, ___ giấy, ___ điện đều nằm chung một tủ.", ans: "băng keo", img: "img/6.jpg" }
