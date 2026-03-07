@@ -6,7 +6,7 @@ const riddles = [
     { text: "Vua thùng phá sảnh, càn cả bàn, gom ___ về.", ans: "chip", img: "img/8.jpg" },
     { text: "Ra ngoài đi học chớ quên mang ___.", ans: "cặp", img: "img/4.jpg" },
     { text: "Bữa sáng đơn giản nhất: Bánh dinh dưỡng + ___.", ans: "sữa", img: "img/5.jpg" },
-    { text: "___ trong, ___ giấy, ___ điện đều nằm chung một tủ.", ans: "băng keo", img: "img/6.jpg" }
+    { text: "___ ___ trong, ___ ___ giấy, ___ ___ điện đều nằm chung một tủ.", ans: "băng keo", img: "img/6.jpg" }
 ];
 
 const correctOrder = ["Gương", "Vòng tay", "Trà sữa", "Blind box", "Sơn Hải Kinh", "Bộ poker", "Sổ sticker", "Bùa"];
